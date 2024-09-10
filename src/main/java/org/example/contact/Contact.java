@@ -1,5 +1,10 @@
 package org.example.contact;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Contact {
     private int id;
     private String name;
@@ -13,5 +18,10 @@ public class Contact {
 
         return this;
     }
+
+    public String getType(){
+        return null;
+    }
+
 
 }

@@ -13,4 +13,5 @@ public class UpdateContact implements State {
     public void handleInput() {
 
     }
+
 }
