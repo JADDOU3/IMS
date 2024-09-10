@@ -9,5 +9,9 @@ public class Contact {
 
     public Contact(){}
 
+    public Contact getContact(int id){
+
+        return this;
+    }
 
 }

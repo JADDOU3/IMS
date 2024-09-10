@@ -2,6 +2,7 @@ package org.example.controller;
 
 
 import org.example.controller.managecontact.ManageContact;
+import org.example.controller.manageitem.ManageItem;
 
 public class MenueState implements State{
     private Context context;
@@ -16,6 +17,7 @@ public class MenueState implements State{
         String in = context.getScanner().nextLine();
         switch (in) {
             case "1":
+                context.setCurrentState(new ManageItem(context));
                 break;
             case "2":
                 context.setCurrentState(new ManageContact(context));
