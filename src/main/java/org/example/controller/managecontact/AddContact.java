@@ -54,10 +54,10 @@ public class AddContact implements State {
 
     }
 
-    public void addContact(Contact contact){
-        String insertContactSQL = "INSERT INTO " +contact.getType()+ " (contact_name, address, email, phone) VALUES (?, ?, ?, ?)";
+    private void addContact(Contact contact){
+        String querySQL = "INSERT INTO " +contact.getType()+ " (contact_name, address, email, phone) VALUES (?, ?, ?, ?)";
         try(Connection connection = DriverManager.getConnection(context.getDatabaseInfo()[0],context.getDatabaseInfo()[1],context.getDatabaseInfo()[2]);
-            PreparedStatement preparedStatement = connection.prepareStatement(insertContactSQL)){
+            PreparedStatement preparedStatement = connection.prepareStatement(querySQL)){
             preparedStatement.setString(1, contact.getName());
             preparedStatement.setString(2, contact.getAddress());
             preparedStatement.setString(3, contact.getEmail());

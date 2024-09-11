@@ -44,9 +44,9 @@ public class DeleteContact implements State {
     }
 
     private void deleteContact(String type , int id) {
-        String insertContactSQL = "DELETE FROM " +type+ " WHERE contact_id = ?";
+        String querySQL = "DELETE FROM " +type+ " WHERE contact_id = ?";
         try(Connection connection = DriverManager.getConnection(context.getDatabaseInfo()[0],context.getDatabaseInfo()[1],context.getDatabaseInfo()[2]);
-            PreparedStatement preparedStatement = connection.prepareStatement(insertContactSQL)){
+            PreparedStatement preparedStatement = connection.prepareStatement(querySQL)){
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         }

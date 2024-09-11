@@ -44,9 +44,9 @@ public class ManageContact implements State {
     }
 
     private void viewContact(){
-        String insertContactSQL = "SELECT * FROM buyers";
+        String querySQL = "SELECT * FROM buyers";
         try(Connection connection = DriverManager.getConnection(context.getDatabaseInfo()[0],context.getDatabaseInfo()[1],context.getDatabaseInfo()[2]);
-            PreparedStatement preparedStatement = connection.prepareStatement(insertContactSQL);
+            PreparedStatement preparedStatement = connection.prepareStatement(querySQL);
             ResultSet resultSet = preparedStatement.executeQuery()){
 
             System.out.println("Buyers Data:");
@@ -65,9 +65,9 @@ public class ManageContact implements State {
         catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        insertContactSQL = "SELECT * FROM supplier";
+        querySQL = "SELECT * FROM supplier";
         try(Connection connection = DriverManager.getConnection(context.getDatabaseInfo()[0],context.getDatabaseInfo()[1],context.getDatabaseInfo()[2]);
-            PreparedStatement preparedStatement = connection.prepareStatement(insertContactSQL);
+            PreparedStatement preparedStatement = connection.prepareStatement(querySQL);
             ResultSet resultSet = preparedStatement.executeQuery()){
 
             System.out.println("Suppliers Data:");
