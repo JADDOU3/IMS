@@ -70,6 +70,7 @@ public class ManageContact implements State {
 
         System.out.println("Enter \"1\" if you want to view detailed data");
         if(context.getScanner().nextLine().equals("1")){
+            System.out.println("Detailed Data :");
             showSuppliers();
             showBuyers();
         }
@@ -77,10 +78,59 @@ public class ManageContact implements State {
     }
 
     private void showSuppliers(){
+        String querySQL = "SELECT * FROM supplier";
+        try(Connection connection = DriverManager.getConnection(context.getDatabaseInfo()[0],context.getDatabaseInfo()[1],context.getDatabaseInfo()[2]);
+            PreparedStatement preparedStatement = connection.prepareStatement(querySQL);
+            ResultSet resultSet = preparedStatement.executeQuery()){
 
+            System.out.println("\nSuppliers Data:");
+            System.out.println("{ [ ID ]\t[ Contact ID ]\t[ Name ]\t\t[ Phone ]\t\t\t[ Email ]\t\t\t\t\t[ Address ]\t\t[ Rating ]\t\t [ prefabrication ]  }");
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                int conId = resultSet.getInt("contact_id");
+                String name = resultSet.getString("name");
+                String phone = resultSet.getString("phone");
+                String email = resultSet.getString("email");
+                String address = resultSet.getString("address");
+                int rating = resultSet.getInt("supplier_rating");
+                boolean prefabrication = resultSet.getBoolean("preferred_supplier");
+
+                System.out.println("{ [ "+ id + " ]\t\t\t[ " + conId + " ]\t\t[ " + name + " ]\t\t[ " + phone + " ]\t\t[ " + email + " ]\t\t[ " + address+ " ]\t\t [ " + rating + " ]\t\t [ " + prefabrication + " ] }");
+            }
+            System.out.println();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private void showBuyers(){
+    private void showBuyers() {
+        String querySQL = "SELECT * FROM buyer";
+        try (Connection connection = DriverManager.getConnection(context.getDatabaseInfo()[0], context.getDatabaseInfo()[1], context.getDatabaseInfo()[2]);
+             PreparedStatement preparedStatement = connection.prepareStatement(querySQL);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            System.out.println("\nBuyers Data:");
+            System.out.println("{ [ ID ]\t[ Contact ID ]\t[ Name ]\t\t[ Phone ]\t\t[ Email ]\t\t\t[ Address ]\t\t[ Purchase History ]\t[ Loyalty Points ] }");
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                int conId = resultSet.getInt("contact_id");
+                String name = resultSet.getString("name");
+                String phone = resultSet.getString("phone");
+                String email = resultSet.getString("email");
+                String address = resultSet.getString("address");
+                String purchaseHistory = resultSet.getString("purchase_history");
+                int loyaltyPoints = resultSet.getInt("loyalty_points");
+
+                System.out.println("{ [ "+ id + " ]\t\t\t[ " + conId + " ]\t\t[ " + name + " ]\t\t[ " + phone + " ]\t\t[ " + email + " ]\t\t[ " + address+ " ]\t\t [ " + purchaseHistory + " ]\t\t [ " + loyaltyPoints + " ] }");
+
+            }
+            System.out.println();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 }
