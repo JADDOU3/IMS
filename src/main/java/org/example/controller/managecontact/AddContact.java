@@ -17,11 +17,10 @@ public class AddContact implements State {
     @Override
     public void handleInput() {
         Contact contact = null;
-        String in;
         System.out.println("Choose the Contact type :\n"+
                            "1. Supplier     2. Buyer");
-        in = context.getScanner().nextLine();
-        switch (in){
+
+        switch (context.getScanner().nextLine()){
             case "1":
                 contact = new Supplier();
                 break;
