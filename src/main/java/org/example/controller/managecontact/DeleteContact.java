@@ -26,7 +26,7 @@ public class DeleteContact implements State {
                 in = "supplier";
                 break;
             case "2"  :
-                in = "buyers";
+                in = "buyer";
                 break;
             default:
                 System.out.println("Please enter a valid Contact Type");
@@ -35,7 +35,10 @@ public class DeleteContact implements State {
         System.out.println("Enter Contact id:");
         int id = context.getScanner().nextInt();
 
-        deleteContact(in,id);
+        String querySQL = "DELETE FROM " +in+ " WHERE contact_id = ?";
+        deleteContact(querySQL , id);
+        querySQL = "DELETE FROM contact WHERE id = ?";
+        deleteContact(querySQL , id);
 
         System.out.println("Contact deleted successfully");
         context.setCurrentState(new ManageContact(context));
@@ -43,8 +46,7 @@ public class DeleteContact implements State {
 
     }
 
-    private void deleteContact(String type , int id) {
-        String querySQL = "DELETE FROM " +type+ " WHERE contact_id = ?";
+    private void deleteContact(String querySQL , int id) {
         try(Connection connection = DriverManager.getConnection(context.getDatabaseInfo()[0],context.getDatabaseInfo()[1],context.getDatabaseInfo()[2]);
             PreparedStatement preparedStatement = connection.prepareStatement(querySQL)){
             preparedStatement.setInt(1, id);

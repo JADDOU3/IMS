@@ -44,47 +44,43 @@ public class ManageContact implements State {
     }
 
     private void viewContact(){
-        String querySQL = "SELECT * FROM buyers";
+        String querySQL = "SELECT * FROM contact";
         try(Connection connection = DriverManager.getConnection(context.getDatabaseInfo()[0],context.getDatabaseInfo()[1],context.getDatabaseInfo()[2]);
             PreparedStatement preparedStatement = connection.prepareStatement(querySQL);
             ResultSet resultSet = preparedStatement.executeQuery()){
 
-            System.out.println("Buyers Data:");
-            System.out.println("{ [ ID ]\t[ Name ]\t\t[ Phone ]\t\t\t[ Email ]\t\t\t\t\t[ Address ] }");
+            System.out.println("\nContacts Data:");
+            System.out.println("{ [ ID ]\t[ Name ]\t\t[ Phone ]\t\t\t[ Email ]\t\t\t\t\t[ Address ]\t\t [ type ] }");
 
             while (resultSet.next()) {
-                int id = resultSet.getInt("contact_id");
-                String name = resultSet.getString("contact_name");
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
                 String phone = resultSet.getString("phone");
                 String email = resultSet.getString("email");
                 String address = resultSet.getString("address");
+                String type = resultSet.getString("type");
 
-                System.out.println("{ [ "+ id + " ]\t\t[ " + name + " ]\t\t[ " + phone + " ]\t\t[ " + email + " ]\t\t\t[ " + address+ " ] }");
+                System.out.println("{ [ "+ id + " ]\t\t[ " + name + " ]\t\t[ " + phone + " ]\t\t[ " + email + " ]\t\t[ " + address+ " ]\t\t [ " + type + " ] }");
             }
+            System.out.println();
         }
         catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        querySQL = "SELECT * FROM supplier";
-        try(Connection connection = DriverManager.getConnection(context.getDatabaseInfo()[0],context.getDatabaseInfo()[1],context.getDatabaseInfo()[2]);
-            PreparedStatement preparedStatement = connection.prepareStatement(querySQL);
-            ResultSet resultSet = preparedStatement.executeQuery()){
 
-            System.out.println("Suppliers Data:");
-            System.out.println("{ [ ID ]\t[ Name ]\t\t[ Phone ]\t\t\t[ Email ]\t\t\t\t\t[ Address ] }");
-
-            while (resultSet.next()) {
-                int id = resultSet.getInt("contact_id");
-                String name = resultSet.getString("contact_name");
-                String phone = resultSet.getString("phone");
-                String email = resultSet.getString("email");
-                String address = resultSet.getString("address");
-
-                System.out.println("{ [ "+ id + " ]\t\t[ " + name + " ]\t\t[ " + phone + " ]\t\t[ " + email + " ]\t\t\t[ " + address+ " ] }");
-            }
+        System.out.println("Enter \"1\" if you want to view detailed data");
+        if(context.getScanner().nextLine().equals("1")){
+            showSuppliers();
+            showBuyers();
         }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
+    }
+
+    private void showSuppliers(){
+
+    }
+
+    private void showBuyers(){
+
     }
 }

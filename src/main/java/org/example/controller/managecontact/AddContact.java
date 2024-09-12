@@ -6,10 +6,7 @@ import org.example.contact.Supplier;
 import org.example.controller.Context;
 import org.example.controller.State;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class AddContact implements State {
     private Context context;
@@ -27,11 +24,9 @@ public class AddContact implements State {
         switch (in){
             case "1":
                 contact = new Supplier();
-                in = "supplier";
                 break;
             case "2"  :
                 contact = new Buyer();
-                in = "buyers";
                 break;
             default:
                 System.out.println("Please enter a valid Contact Type");
@@ -46,7 +41,7 @@ public class AddContact implements State {
         System.out.println("Enter Contact Email Address :");
         contact.setEmail(context.getScanner().nextLine());
 
-        addContact(contact );
+        addToContactTable(contact);
 
         System.out.println("Contact Added Successfully");
         context.setCurrentState(new ManageContact(context));
@@ -55,17 +50,46 @@ public class AddContact implements State {
     }
 
     private void addContact(Contact contact){
-        String querySQL = "INSERT INTO " +contact.getType()+ " (contact_name, address, email, phone) VALUES (?, ?, ?, ?)";
+        String querySQL = "INSERT INTO " +contact.getType()+ " (contact_id , name, phone, email, address) VALUES (? , ?, ?, ?, ?)";
         try(Connection connection = DriverManager.getConnection(context.getDatabaseInfo()[0],context.getDatabaseInfo()[1],context.getDatabaseInfo()[2]);
             PreparedStatement preparedStatement = connection.prepareStatement(querySQL)){
-            preparedStatement.setString(1, contact.getName());
-            preparedStatement.setString(2, contact.getAddress());
-            preparedStatement.setString(3, contact.getEmail());
-            preparedStatement.setString(4, contact.getPhone());
+            preparedStatement.setInt(1, contact.getId());
+            preparedStatement.setString(2, contact.getName());
+            preparedStatement.setString(3, contact.getAddress());
+            preparedStatement.setString(4, contact.getEmail());
+            preparedStatement.setString(5, contact.getPhone());
             preparedStatement.executeUpdate();
         }
         catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
     }
+
+    private void addToContactTable(Contact contact) {
+        String querySQL = "INSERT INTO contact (name, phone, email, address, type) VALUES (?, ?, ?, ?, ?)";
+        try (Connection connection = DriverManager.getConnection(context.getDatabaseInfo()[0], context.getDatabaseInfo()[1], context.getDatabaseInfo()[2]);
+             PreparedStatement preparedStatement = connection.prepareStatement(querySQL, Statement.RETURN_GENERATED_KEYS)) {
+
+            preparedStatement.setString(1, contact.getName());
+            preparedStatement.setString(2, contact.getPhone());
+            preparedStatement.setString(3, contact.getEmail());
+            preparedStatement.setString(4, contact.getAddress());
+            preparedStatement.setString(5, contact.getType());
+            preparedStatement.executeUpdate();
+
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    contact.setId(generatedKeys.getInt(1));
+                    addContact(contact);
+                } else {
+                    throw new SQLException("Failed to obtain contact ID.");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }
