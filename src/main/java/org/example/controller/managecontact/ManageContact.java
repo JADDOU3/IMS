@@ -112,7 +112,7 @@ public class ManageContact implements State {
              ResultSet resultSet = preparedStatement.executeQuery()) {
 
             System.out.println("\nBuyers Data:");
-            System.out.println("{ [ ID ]\t[ Contact ID ]\t[ Name ]\t\t[ Phone ]\t\t[ Email ]\t\t\t[ Address ]\t\t[ Purchase History ]\t[ Loyalty Points ] }");
+            System.out.println("{ [ ID ]\t[ Contact ID ]\t[ Name ]\t\t[ Phone ]\t\t[ Email ]\t\t\t\t[ Address ]\t\t[ Loyalty Points ] }");
 
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
@@ -121,10 +121,9 @@ public class ManageContact implements State {
                 String phone = resultSet.getString("phone");
                 String email = resultSet.getString("email");
                 String address = resultSet.getString("address");
-                String purchaseHistory = resultSet.getString("purchase_history");
                 int loyaltyPoints = resultSet.getInt("loyalty_points");
 
-                System.out.println("{ [ "+ id + " ]\t\t\t[ " + conId + " ]\t\t[ " + name + " ]\t\t[ " + phone + " ]\t\t[ " + email + " ]\t\t[ " + address+ " ]\t\t [ " + purchaseHistory + " ]\t\t [ " + loyaltyPoints + " ] }");
+                System.out.println("{ [ "+ id + " ]\t\t\t[ " + conId + " ]\t\t[ " + name + " ]\t\t[ " + phone + " ]\t\t[ " + email + " ]\t\t[ " + address+ " ]\t\t [ " + loyaltyPoints + " ] }");
 
             }
             System.out.println();
