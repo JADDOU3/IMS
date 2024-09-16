@@ -2,6 +2,12 @@ package org.example.controller.manageitem;
 
 import org.example.controller.Context;
 import org.example.controller.State;
+import org.example.optionsmanager.Menue;
+import org.example.optionsmanager.Option;
+import org.example.optionsmanager.itemopt.AddItemOpt;
+import org.example.optionsmanager.itemopt.DeleteItemOpt;
+import org.example.optionsmanager.itemopt.UpdateItemOpt;
+import org.example.optionsmanager.itemopt.ViewItemOpt;
 
 import java.sql.*;
 
@@ -13,29 +19,17 @@ public class ManageItem implements State {
 
     @Override
     public void handleInput() {
-        System.out.println("1. Add Item      2. Update Item\n"+
-                           "3. Delete Item   4. View Items");
-        String in = context.getScanner().nextLine();
-        switch (in){
-            case "1":
-                context.setCurrentState(new AddItem(context));
-                break;
-            case "2":
-                context.setCurrentState(new UpdateItem(context));
-                break;
-            case "3":
-                context.setCurrentState(new DeleteItem(context));
-                break;
-            case "4":
-                viewItem();
-                break;
-            default:
-                System.out.println("Invalid input");
-        }
-        context.handleInput();
+        Option[] options = {
+                new AddItemOpt(context),
+                new DeleteItemOpt(context),
+                new UpdateItemOpt(context),
+                new ViewItemOpt(context)
+        };
+        Menue menue = new Menue(options);
+        menue.showMenu();
     }
 
-    private void viewItem() {
+    public void viewItem() {
         String querySQL = "SELECT * FROM items";
         try(Connection connection = DriverManager.getConnection(context.getDatabaseInfo()[0],context.getDatabaseInfo()[1],context.getDatabaseInfo()[2]);
             PreparedStatement preparedStatement = connection.prepareStatement(querySQL);
