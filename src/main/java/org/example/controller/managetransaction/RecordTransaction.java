@@ -1,7 +1,6 @@
 package org.example.controller.managetransaction;
 
-import lombok.Data;
-import org.example.Transaction;
+import org.example.transaction.Transaction;
 import org.example.controller.Context;
 import org.example.controller.State;
 

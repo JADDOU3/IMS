@@ -1,4 +1,4 @@
-package org.example;
+package org.example.transaction;
 
 import lombok.Data;
 import org.example.controller.Context;
