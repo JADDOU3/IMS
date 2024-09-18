@@ -3,6 +3,7 @@ package org.example.controller;
 
 import org.example.optionsmanager.Menue;
 import org.example.optionsmanager.Option;
+import org.example.optionsmanager.searchopt.SearchOpt;
 import org.example.optionsmanager.contactoption.ConactOpt;
 import org.example.optionsmanager.itemopt.ItemOpt;
 import org.example.optionsmanager.transopt.TransOpt;
@@ -19,7 +20,8 @@ public class MenueState implements State{
         Option[] options = {
                 new ItemOpt(context),
                 new ConactOpt(context),
-                new TransOpt(context)
+                new TransOpt(context),
+                new SearchOpt(context)
         };
         Menue menue = new Menue(options);
         menue.showMenu();
