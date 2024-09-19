@@ -32,7 +32,7 @@ public class UpdateTransaction implements State {
         System.out.println("1. Update Date      2. Update Amount    3. Update State");
         switch (context.getScanner().nextInt()) {
             case 1:
-               //TODO updated date
+                transaction.setDate(new java.util.Date());
                 break;
             case 2:
                 System.out.println("Enter new amount:");
@@ -40,6 +40,7 @@ public class UpdateTransaction implements State {
                 break;
             case 3:
                 transaction.setState("approved");
+                updateInventory(transaction);
                 break;
             default:
                 System.out.println("Invalid input");
@@ -93,5 +94,47 @@ public class UpdateTransaction implements State {
             throw new RuntimeException(e);
         }
         return transaction;
+    }
+
+    public void updateInventory(Transaction transaction){
+        String querySQL = "SELECT * FROM items WHERE item_id = ?";
+        Item item = null;
+        try (Connection connection = DriverManager.getConnection(context.getDatabaseInfo()[0], context.getDatabaseInfo()[1], context.getDatabaseInfo()[2]);
+             PreparedStatement preparedStatement = connection.prepareStatement(querySQL)) {
+
+            preparedStatement.setInt(1, transaction.getItemID());
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    item = new Item();
+                    item.setId(resultSet.getInt("item_id"));
+                    item.setName(resultSet.getString("item_name"));
+                    item.setQuantity(resultSet.getInt("quantity"));
+                    item.setPrice(resultSet.getInt("price"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        if(transaction.getType().equals("purchase"))
+            item.setQuantity(item.getQuantity() + transaction.getAmount());
+        else
+            item.setQuantity(item.getQuantity() - transaction.getAmount());
+        updateItem(item);
+    }
+
+    private void updateItem(Item item) {
+        String querySQL = "UPDATE items SET item_name = ?, quantity = ? , price = ? WHERE item_id = ?";
+        try(Connection connection = DriverManager.getConnection(context.getDatabaseInfo()[0],context.getDatabaseInfo()[1],context.getDatabaseInfo()[2]);
+            PreparedStatement preparedStatement = connection.prepareStatement(querySQL)){
+            preparedStatement.setString(1, item.getName());
+            preparedStatement.setInt(2, item.getQuantity());
+            preparedStatement.setDouble(3, item.getPrice());
+            preparedStatement.setInt(4, item.getId());
+            preparedStatement.executeUpdate();
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

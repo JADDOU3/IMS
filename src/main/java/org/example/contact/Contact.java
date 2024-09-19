@@ -1,8 +1,6 @@
 package org.example.contact;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Data
 public class Contact {
@@ -14,10 +12,6 @@ public class Contact {
 
     public Contact(){}
 
-    public Contact getContact(int id){
-
-        return this;
-    }
 
     public String getType(){
         return null;
