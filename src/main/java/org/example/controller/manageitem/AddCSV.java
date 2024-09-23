@@ -43,11 +43,11 @@ public class AddCSV implements State {
                 if (values.length == 3) {
                     String itemName = values[0];
                     int quantity = Integer.parseInt(values[1]);
-                    int reorderLevel = Integer.parseInt(values[2]);
+                    int price = Integer.parseInt(values[2]);
 
                     preparedStatement.setString(1, itemName);
                     preparedStatement.setInt(2, quantity);
-                    preparedStatement.setInt(3, reorderLevel);
+                    preparedStatement.setInt(3, price);
                     preparedStatement.addBatch();
                 } else {
                     System.out.println("Invalid data format in CSV.");
