@@ -1,6 +1,7 @@
 package org.example.controller;
 
 
+import org.example.optionsmanager.reportopt.GenerateReport;
 import org.example.optionsmanager.Menue;
 import org.example.optionsmanager.Option;
 import org.example.optionsmanager.searchopt.SearchOpt;
@@ -21,7 +22,8 @@ public class MenueState implements State{
                 new ItemOpt(context),
                 new ConactOpt(context),
                 new TransOpt(context),
-                new SearchOpt(context)
+                new SearchOpt(context),
+                new GenerateReport(context)
         };
         Menue menue = new Menue(options);
         menue.showMenu();

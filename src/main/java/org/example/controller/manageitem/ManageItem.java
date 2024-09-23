@@ -4,10 +4,7 @@ import org.example.controller.Context;
 import org.example.controller.State;
 import org.example.optionsmanager.Menue;
 import org.example.optionsmanager.Option;
-import org.example.optionsmanager.itemopt.AddItemOpt;
-import org.example.optionsmanager.itemopt.DeleteItemOpt;
-import org.example.optionsmanager.itemopt.UpdateItemOpt;
-import org.example.optionsmanager.itemopt.ViewItemOpt;
+import org.example.optionsmanager.itemopt.*;
 
 import java.sql.*;
 
@@ -20,7 +17,7 @@ public class ManageItem implements State {
     @Override
     public void handleInput() {
         Option[] options = {
-                new AddItemOpt(context),
+                new AddMenueOpt(context),
                 new DeleteItemOpt(context),
                 new UpdateItemOpt(context),
                 new ViewItemOpt(context)
