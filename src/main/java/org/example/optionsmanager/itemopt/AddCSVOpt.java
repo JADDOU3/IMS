@@ -1,8 +1,7 @@
 package org.example.optionsmanager.itemopt;
 
 import org.example.controller.Context;
-import org.example.controller.manageitem.AddCSV;
-import org.example.controller.manageitem.AddMenue;
+import org.example.controller.manageitem.add.AddCSV;
 import org.example.optionsmanager.Option;
 
 public class AddCSVOpt extends Option {

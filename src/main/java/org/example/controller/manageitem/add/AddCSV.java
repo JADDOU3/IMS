@@ -1,17 +1,15 @@
-package org.example.controller.manageitem;
+package org.example.controller.manageitem.add;
 
 import org.example.controller.Context;
 import org.example.controller.State;
-import org.example.item.Item;
+import org.example.controller.manageitem.ManageItem;
 
 import java.io.BufferedReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 public class AddCSV implements State {
     private Context context;

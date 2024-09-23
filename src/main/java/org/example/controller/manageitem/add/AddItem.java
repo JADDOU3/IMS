@@ -1,8 +1,8 @@
-package org.example.controller.manageitem;
+package org.example.controller.manageitem.add;
 
-import org.example.contact.Contact;
 import org.example.controller.Context;
 import org.example.controller.State;
+import org.example.controller.manageitem.ManageItem;
 import org.example.item.Item;
 
 import java.sql.Connection;
