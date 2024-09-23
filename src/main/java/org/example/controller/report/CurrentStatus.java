@@ -27,13 +27,13 @@ public class CurrentStatus implements State {
             System.out.println("Invalid input");
             handleInput();
         }
-        showLowStockItems(i);
+        showItems(i);
 
         context.setCurrentState(new GenerateReportState(context));
         context.handleInput();
     }
 
-    public void showLowStockItems(int i){
+    public void showItems(int i){
         List<String[]> list = new ArrayList<>();
         String querySQL = "SELECT * FROM items";
         try(Connection connection = DriverManager.getConnection(context.getDatabaseInfo()[0],context.getDatabaseInfo()[1],context.getDatabaseInfo()[2]);
@@ -41,11 +41,12 @@ public class CurrentStatus implements State {
             ResultSet resultSet = preparedStatement.executeQuery()){
 
             while (resultSet.next()) {
-                String[] line = new String[4];
+                String[] line = new String[5];
                 line[0] = String.valueOf(resultSet.getInt("item_id"));
                 line[1] = resultSet.getString("item_name");
                 line[2] = String.valueOf(resultSet.getInt("quantity"));
                 line[3] = String.valueOf(resultSet.getInt("price"));
+                line[4] = String.valueOf(resultSet.getInt("reorder_level"));
                 list.add(line);
             }
 
@@ -60,9 +61,10 @@ public class CurrentStatus implements State {
     }
 
     public void consolePrint(List<String[]> list){
-        System.out.println("\n{ [ ID ]\t[ Name ]\t\t[ Quantity ]\t\t[ Price ] }");
+        System.out.println("\n{ [ ID ]\t[ Name ]\t\t[ Quantity ]\t\t[ Price ]\t\t[ Reorder Level ] }");
         for(String[] line : list) {
-            System.out.println("{ [ " + line[0] + " ]\t\t[ " + line[1] + " ]\t\t[ " + line[2] + " ]\t\t\t\t[ " + line[3] + " ] }");
+            String isLowStock = Integer.valueOf(line[2]) <= Integer.valueOf(line[4]) ? "Low Stock" : "Available";
+            System.out.println("{ [ " + line[0] + " ]\t\t[ " + line[1] + " ]\t\t[ " + line[2] + " ]\t\t\t\t[ " + line[3] + " ]\t\t\t[ "+line[4]+" ] }\t\t : " + isLowStock);
         }
         System.out.println();
     }
@@ -71,9 +73,11 @@ public class CurrentStatus implements State {
         System.out.println("Enter file path :");
         String filePath = context.getScanner().nextLine();
         try (PrintWriter writer = new PrintWriter(new File(filePath))) {
-            writer.println("{ [ ID ]\t[ Name ]\t\t[ Quantity ]\t\t[ Price ] }");
+            writer.println("{ [ ID ]\t[ Name ]\t\t[ Quantity ]\t\t[ Price ]\t\t[ Reorder Level ] }");
             for(String[] line : list) {
-                writer.println("{ [ " + line[0] + " ]\t\t[ " + line[1] + " ]\t\t[ " + line[2] + " ]\t\t\t\t[ " + line[3] + " ] }");
+                String isLowStock = Integer.valueOf(line[2]) <= Integer.valueOf(line[4]) ? "Low Stock" : "Available";
+                writer.println("{ [ " + line[0] + " ]\t\t[ " + line[1] + " ]\t\t[ " + line[2] + " ]\t\t\t\t[ " + line[3] + " ]\t\t\t[ "+line[4]+" ] }\t\t : " + isLowStock);
+
             }
 
             System.out.println("Report exported successfully to " + filePath);

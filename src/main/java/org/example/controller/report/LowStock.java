@@ -33,7 +33,7 @@ public class LowStock implements State {
 
     public void showLowStockItems(int i){
         List<String[]> list = new ArrayList<>();
-        String querySQL = "SELECT * FROM items WHERE quantity < 10";
+        String querySQL = "SELECT * FROM items WHERE quantity <= reorder_level";
         try(Connection connection = DriverManager.getConnection(context.getDatabaseInfo()[0],context.getDatabaseInfo()[1],context.getDatabaseInfo()[2]);
             PreparedStatement preparedStatement = connection.prepareStatement(querySQL);
             ResultSet resultSet = preparedStatement.executeQuery()){
